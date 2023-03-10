@@ -28,6 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,6 +43,10 @@
             this.comboMeasureType = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.group2 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtAlarmH = new System.Windows.Forms.TextBox();
+            this.txtAlarmL = new System.Windows.Forms.TextBox();
             this.txtUnit = new System.Windows.Forms.TextBox();
             this.txtURV = new System.Windows.Forms.TextBox();
             this.txtLRV = new System.Windows.Forms.TextBox();
@@ -87,9 +95,14 @@
             this.labelIPAddress = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.listBoxServer = new System.Windows.Forms.ListBox();
+            this.tabSignal = new System.Windows.Forms.TabPage();
+            this.btnStopMonitoring = new System.Windows.Forms.Button();
+            this.btnStartRecording = new System.Windows.Forms.Button();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.timeReadScaled = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             this.sensorData.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -97,6 +110,8 @@
             this.group1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.tabSignal.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -138,6 +153,7 @@
             this.sensorData.Controls.Add(this.tabPage1);
             this.sensorData.Controls.Add(this.tabPage2);
             this.sensorData.Controls.Add(this.tabPage3);
+            this.sensorData.Controls.Add(this.tabSignal);
             this.sensorData.Location = new System.Drawing.Point(2, 29);
             this.sensorData.Name = "sensorData";
             this.sensorData.SelectedIndex = 0;
@@ -214,21 +230,57 @@
             // 
             // group2
             // 
+            this.group2.Controls.Add(this.label8);
+            this.group2.Controls.Add(this.label7);
+            this.group2.Controls.Add(this.txtAlarmH);
+            this.group2.Controls.Add(this.txtAlarmL);
             this.group2.Controls.Add(this.txtUnit);
             this.group2.Controls.Add(this.txtURV);
             this.group2.Controls.Add(this.txtLRV);
             this.group2.Controls.Add(this.label4);
             this.group2.Controls.Add(this.label3);
             this.group2.Controls.Add(this.label2);
-            this.group2.Location = new System.Drawing.Point(410, 14);
+            this.group2.Location = new System.Drawing.Point(404, 14);
             this.group2.Name = "group2";
-            this.group2.Size = new System.Drawing.Size(151, 143);
+            this.group2.Size = new System.Drawing.Size(157, 207);
             this.group2.TabIndex = 14;
             this.group2.TabStop = false;
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(-1, 169);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(60, 20);
+            this.label8.TabIndex = 9;
+            this.label8.Text = "AlarmH";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(0, 137);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(56, 20);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "AlarmL";
+            // 
+            // txtAlarmH
+            // 
+            this.txtAlarmH.Location = new System.Drawing.Point(59, 166);
+            this.txtAlarmH.Name = "txtAlarmH";
+            this.txtAlarmH.Size = new System.Drawing.Size(87, 27);
+            this.txtAlarmH.TabIndex = 7;
+            // 
+            // txtAlarmL
+            // 
+            this.txtAlarmL.Location = new System.Drawing.Point(59, 133);
+            this.txtAlarmL.Name = "txtAlarmL";
+            this.txtAlarmL.Size = new System.Drawing.Size(87, 27);
+            this.txtAlarmL.TabIndex = 6;
+            // 
             // txtUnit
             // 
-            this.txtUnit.Location = new System.Drawing.Point(53, 88);
+            this.txtUnit.Location = new System.Drawing.Point(59, 88);
             this.txtUnit.MaxLength = 4;
             this.txtUnit.Name = "txtUnit";
             this.txtUnit.Size = new System.Drawing.Size(87, 27);
@@ -236,7 +288,7 @@
             // 
             // txtURV
             // 
-            this.txtURV.Location = new System.Drawing.Point(53, 55);
+            this.txtURV.Location = new System.Drawing.Point(59, 55);
             this.txtURV.Name = "txtURV";
             this.txtURV.Size = new System.Drawing.Size(87, 27);
             this.txtURV.TabIndex = 4;
@@ -244,7 +296,7 @@
             // 
             // txtLRV
             // 
-            this.txtLRV.Location = new System.Drawing.Point(53, 23);
+            this.txtLRV.Location = new System.Drawing.Point(59, 20);
             this.txtLRV.Name = "txtLRV";
             this.txtLRV.Size = new System.Drawing.Size(87, 27);
             this.txtLRV.TabIndex = 3;
@@ -279,7 +331,7 @@
             // 
             // BtnReg
             // 
-            this.BtnReg.Location = new System.Drawing.Point(425, 293);
+            this.BtnReg.Location = new System.Drawing.Point(425, 317);
             this.BtnReg.Name = "BtnReg";
             this.BtnReg.Size = new System.Drawing.Size(125, 29);
             this.BtnReg.TabIndex = 3;
@@ -302,16 +354,16 @@
             this.group1.Controls.Add(this.BtnDelete);
             this.group1.Controls.Add(this.BtnSaveChanges);
             this.group1.Controls.Add(this.BtnRegisterNew);
-            this.group1.Location = new System.Drawing.Point(410, 163);
+            this.group1.Location = new System.Drawing.Point(410, 217);
             this.group1.Name = "group1";
-            this.group1.Size = new System.Drawing.Size(151, 124);
+            this.group1.Size = new System.Drawing.Size(151, 94);
             this.group1.TabIndex = 15;
             this.group1.TabStop = false;
             // 
             // BtnDelete
             // 
             this.BtnDelete.AutoSize = true;
-            this.BtnDelete.Location = new System.Drawing.Point(25, 97);
+            this.BtnDelete.Location = new System.Drawing.Point(25, 68);
             this.BtnDelete.Name = "BtnDelete";
             this.BtnDelete.Size = new System.Drawing.Size(74, 24);
             this.BtnDelete.TabIndex = 2;
@@ -322,7 +374,7 @@
             // BtnSaveChanges
             // 
             this.BtnSaveChanges.AutoSize = true;
-            this.BtnSaveChanges.Location = new System.Drawing.Point(25, 62);
+            this.BtnSaveChanges.Location = new System.Drawing.Point(25, 38);
             this.BtnSaveChanges.Name = "BtnSaveChanges";
             this.BtnSaveChanges.Size = new System.Drawing.Size(121, 24);
             this.BtnSaveChanges.TabIndex = 1;
@@ -334,7 +386,7 @@
             // 
             this.BtnRegisterNew.AutoSize = true;
             this.BtnRegisterNew.Checked = true;
-            this.BtnRegisterNew.Location = new System.Drawing.Point(25, 26);
+            this.BtnRegisterNew.Location = new System.Drawing.Point(25, 10);
             this.BtnRegisterNew.Name = "BtnRegisterNew";
             this.BtnRegisterNew.Size = new System.Drawing.Size(115, 24);
             this.BtnRegisterNew.TabIndex = 0;
@@ -410,6 +462,7 @@
             // 
             this.txtSensorName.Location = new System.Drawing.Point(155, 14);
             this.txtSensorName.Name = "txtSensorName";
+            this.txtSensorName.PasswordChar = '*';
             this.txtSensorName.Size = new System.Drawing.Size(125, 27);
             this.txtSensorName.TabIndex = 6;
             this.txtSensorName.MouseHover += new System.EventHandler(this.txtSensorName_MouseHover);
@@ -705,6 +758,57 @@
             this.listBoxServer.Size = new System.Drawing.Size(657, 324);
             this.listBoxServer.TabIndex = 2;
             // 
+            // tabSignal
+            // 
+            this.tabSignal.Controls.Add(this.btnStopMonitoring);
+            this.tabSignal.Controls.Add(this.btnStartRecording);
+            this.tabSignal.Controls.Add(this.chart1);
+            this.tabSignal.Location = new System.Drawing.Point(4, 29);
+            this.tabSignal.Name = "tabSignal";
+            this.tabSignal.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSignal.Size = new System.Drawing.Size(936, 352);
+            this.tabSignal.TabIndex = 3;
+            this.tabSignal.Text = "Signals";
+            this.tabSignal.UseVisualStyleBackColor = true;
+            // 
+            // btnStopMonitoring
+            // 
+            this.btnStopMonitoring.Location = new System.Drawing.Point(738, 64);
+            this.btnStopMonitoring.Name = "btnStopMonitoring";
+            this.btnStopMonitoring.Size = new System.Drawing.Size(161, 29);
+            this.btnStopMonitoring.TabIndex = 2;
+            this.btnStopMonitoring.Text = "Stop Monitoring";
+            this.btnStopMonitoring.UseVisualStyleBackColor = true;
+            this.btnStopMonitoring.Click += new System.EventHandler(this.btnStopMonitoring_Click);
+            // 
+            // btnStartRecording
+            // 
+            this.btnStartRecording.Location = new System.Drawing.Point(739, 17);
+            this.btnStartRecording.Name = "btnStartRecording";
+            this.btnStartRecording.Size = new System.Drawing.Size(160, 29);
+            this.btnStartRecording.TabIndex = 1;
+            this.btnStartRecording.Text = "Start Monitoring";
+            this.btnStartRecording.UseVisualStyleBackColor = true;
+            this.btnStartRecording.Click += new System.EventHandler(this.btnStartRecording_Click);
+            // 
+            // chart1
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
+            this.chart1.Location = new System.Drawing.Point(31, 17);
+            this.chart1.Name = "chart1";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
+            this.chart1.Series.Add(series1);
+            this.chart1.Size = new System.Drawing.Size(679, 309);
+            this.chart1.TabIndex = 0;
+            this.chart1.Text = "chart1";
+            // 
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -722,6 +826,11 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(59, 20);
             this.toolStripStatusLabel.Text = "Ready...";
             // 
+            // timeReadScaled
+            // 
+            this.timeReadScaled.Interval = 5000;
+            this.timeReadScaled.Tick += new System.EventHandler(this.timeReadScaled_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -737,7 +846,6 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Learning from tutorial";
-            this.TopMost = true;
             this.Click += new System.EventHandler(this.Form1_Click);
             this.DoubleClick += new System.EventHandler(this.Form1_DoubleClick);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
@@ -755,6 +863,8 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
+            this.tabSignal.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -826,5 +936,14 @@
         private Button btnDisconnect;
         private Button btnComConnect;
         private ComboBox txtBaudRate;
+        private TabPage tabSignal;
+        private Label label8;
+        private Label label7;
+        private TextBox txtAlarmH;
+        private TextBox txtAlarmL;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private Button btnStartRecording;
+        private Button btnStopMonitoring;
+        private System.Windows.Forms.Timer timeReadScaled;
     }
 }

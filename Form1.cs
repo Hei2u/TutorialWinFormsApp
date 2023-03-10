@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace TutorialWinFormsApp
@@ -21,7 +22,11 @@ namespace TutorialWinFormsApp
         uint nrAnalog = 0;
         uint nrFieldbus = 0;
 
-        static SerialPort serialPort;
+        uint i = 0;
+
+        bool monitor = false;
+
+        //static SerialPort serialPort;
 
         //string[] servers = new string[] {""};
         List<string> servers = new List<string>();
@@ -31,6 +36,7 @@ namespace TutorialWinFormsApp
             
             InitializeComponent();
 
+            /*
             string[] ComPorts = System.IO.Ports.SerialPort.GetPortNames();
             txtComPort.Items.AddRange(ComPorts);
 
@@ -42,6 +48,7 @@ namespace TutorialWinFormsApp
             serialPort.StopBits = StopBits.One;
             serialPort.Handshake = Handshake.None;
             serialPort.DataReceived += dataReceived;
+            */
 
             /*
             IPAddress[] addresslist = Dns.GetHostAddresses(Dns.GetHostName());
@@ -60,8 +67,8 @@ namespace TutorialWinFormsApp
 
         private void dataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            string message = serialPort.ReadLine();
-            txtComReceived.AppendText(message);
+            //string message = serialPort.ReadLine();
+            //txtComReceived.AppendText(message);
         }
 
         private void Form1_MouseEnter(object sender, EventArgs e)
@@ -382,7 +389,7 @@ namespace TutorialWinFormsApp
 
         }
 
-        private void connectAndSend(string info)
+        private string connectAndSend(string info)
         {
             IPEndPoint endpoint = new IPEndPoint(IPAddress.Parse(txtIPAddress.Text), Convert.ToInt32(txtPort.Text));
             Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -398,14 +405,21 @@ namespace TutorialWinFormsApp
 
                 byte[] buffer = new byte[1024];
                 int bytesReceived = client.Receive(buffer);
-                txtCommunication.AppendText("Received: " + Encoding.ASCII.GetString(buffer, 0, bytesReceived));
 
+                //txtCommunication.AppendText("Received: " + Encoding.ASCII.GetString(buffer, 0, bytesReceived));
+                string hele = Encoding.ASCII.GetString(buffer, 0, bytesReceived);
+                string[] words = hele.Split(';');
+                //chart1.Series[0].Points.AddXY(i, words[1]);
+                
                 client.Close();
+                txtCommunication.AppendText(hele);
                 txtCommunication.AppendText("Disconnected from server.");
+                return words[1];
             }
             catch
             {
                 txtCommunication.AppendText("something went wrong");
+                return "ups!";
             }
         }
 
@@ -419,7 +433,7 @@ namespace TutorialWinFormsApp
         {
             string[] sensorConf;
             string recieved;
-            connectAndSend("readconfig");
+            connectAndSend("readconf");
             //send spørsmål om readconf til ConsoleApp
             //skriv svaret til txtCommunication
 
@@ -443,7 +457,7 @@ namespace TutorialWinFormsApp
         {
             string[] sensorConf;
             string recieved;
-            connectAndSend("readstate");
+            connectAndSend("readstatus");
             // send spørsmål om readstate til ConsoleApp
             //skriv svaret(recieved) til txtCommunication
         }
@@ -459,16 +473,27 @@ namespace TutorialWinFormsApp
 
         private void btnWriteconfig_Click(object sender, EventArgs e)
         {
-            connectAndSend("writeconfig");
+            //lage strengen som skal sendes
+            string instrumentConfig = "";
+            instrumentConfig = "writeconf>password>name" + 
+                txtSensorName.Text + ";" +
+                txtLRV.Text + ";" +
+                txtURV.Text + ";" +
+                txtAlarmL.Text + ";" +
+                txtAlarmH + ";"; //legg til høy alarm og lav alarm når jeg har fått laget disse
+            //og få noen til å send inn passord
+            //se om det er analog
+            connectAndSend(instrumentConfig);
         }
 
         private void btnConnect2_Click(object sender, EventArgs e)
         {
+            /*
             //this is actually btnComConnect
             //txtComReceived.AppendText("Hei");
             if (txtComPort.Text != "")
             {
-                serialPort.PortName = txtComPort.Text;
+                serialPort.PortName = txtComPort.Text; //noe er galt
             }
             else
             {
@@ -486,6 +511,44 @@ namespace TutorialWinFormsApp
             serialPort.WriteLine(txtSend.Text);
             //serialPort.ReadLine();
             txtComReceived.AppendText(serialPort.ReadLine().ToString());
+            */
+        }
+
+        private void btnStartRecording_Click(object sender, EventArgs e)
+        {
+            //monitor = true;
+            //string[] sensorConf;
+            //string recieved;
+            timeReadScaled.Start();
+            //while (monitor)
+            //{
+                //string word = connectAndSend("readscaled");
+                //chart1.Series[0].Points.AddXY(i, word);
+                //i += 1;
+                //Thread.Sleep(10000);
+            //}
+            //string word = connectAndSend("readscaled");
+            //-chart1.Series[0].Points.AddXY(i, word);
+
+
+            //chart1.Series[0].Points.AddXY(1.0, 1.0);
+            //chart1.Series[0].Points.AddXY(4.5, 2.5);
+        }
+
+        private void btnStopMonitoring_Click(object sender, EventArgs e)
+        {
+            //monitor = false;
+            timeReadScaled.Stop();
+        }
+
+        private void timeReadScaled_Tick(object sender, EventArgs e)
+        {
+            DateTime timeNow = DateTime.Now;
+            //txtSummary.AppendText(localDate);
+
+            string word = connectAndSend("readscaled");
+            chart1.Series[0].Points.AddXY(timeNow.ToString("mm:ss"), word);
+            i += 1;
         }
     }
 }

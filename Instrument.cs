@@ -24,6 +24,8 @@ namespace TutorialWinFormsApp
         public double LRV { get; set; }
         public double URV { get; set; }
         public string Unit { get; set; }
+        public double AlarmL { get; set; }
+        public double AlarmH { get; set; }
 
         public Instrument( string SensorName,
             string SerialNumber,
