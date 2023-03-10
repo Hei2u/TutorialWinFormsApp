@@ -22,9 +22,9 @@ namespace TutorialWinFormsApp
         uint nrAnalog = 0;
         uint nrFieldbus = 0;
 
-        uint i = 0;
+        //uint i = 0;
 
-        bool monitor = false;
+        //bool monitor = false;
 
         //static SerialPort serialPort;
 
@@ -548,7 +548,7 @@ namespace TutorialWinFormsApp
 
             string word = connectAndSend("readscaled");
             chart1.Series[0].Points.AddXY(timeNow.ToString("mm:ss"), word);
-            i += 1;
+            //i += 1;
         }
     }
 }
