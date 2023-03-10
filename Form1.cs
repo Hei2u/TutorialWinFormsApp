@@ -519,6 +519,12 @@ namespace TutorialWinFormsApp
             //monitor = true;
             //string[] sensorConf;
             //string recieved;
+            DateTime timeNow = DateTime.Now;
+            //txtSummary.AppendText(localDate);
+
+            string word = connectAndSend("readscaled");
+            chart1.Series[0].Points.AddXY(timeNow.ToString("mm:ss"), word);
+            txtMonitor.AppendText(word + "\r\n");
             timeReadScaled.Start();
             //while (monitor)
             //{
@@ -548,6 +554,7 @@ namespace TutorialWinFormsApp
 
             string word = connectAndSend("readscaled");
             chart1.Series[0].Points.AddXY(timeNow.ToString("mm:ss"), word);
+            txtMonitor.AppendText(word + "\r\n");
             //i += 1;
         }
     }

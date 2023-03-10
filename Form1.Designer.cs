@@ -103,6 +103,7 @@
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.timeReadScaled = new System.Windows.Forms.Timer(this.components);
+            this.txtMonitor = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.sensorData.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -760,6 +761,7 @@
             // 
             // tabSignal
             // 
+            this.tabSignal.Controls.Add(this.txtMonitor);
             this.tabSignal.Controls.Add(this.btnStopMonitoring);
             this.tabSignal.Controls.Add(this.btnStartRecording);
             this.tabSignal.Controls.Add(this.chart1);
@@ -768,7 +770,7 @@
             this.tabSignal.Padding = new System.Windows.Forms.Padding(3);
             this.tabSignal.Size = new System.Drawing.Size(936, 352);
             this.tabSignal.TabIndex = 3;
-            this.tabSignal.Text = "Signals";
+            this.tabSignal.Text = "Monitor";
             this.tabSignal.UseVisualStyleBackColor = true;
             // 
             // btnStopMonitoring
@@ -831,6 +833,15 @@
             this.timeReadScaled.Interval = 5000;
             this.timeReadScaled.Tick += new System.EventHandler(this.timeReadScaled_Tick);
             // 
+            // txtMonitor
+            // 
+            this.txtMonitor.Location = new System.Drawing.Point(746, 194);
+            this.txtMonitor.Multiline = true;
+            this.txtMonitor.Name = "txtMonitor";
+            this.txtMonitor.ReadOnly = true;
+            this.txtMonitor.Size = new System.Drawing.Size(125, 115);
+            this.txtMonitor.TabIndex = 3;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -864,6 +875,7 @@
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabSignal.ResumeLayout(false);
+            this.tabSignal.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -945,5 +957,6 @@
         private Button btnStartRecording;
         private Button btnStopMonitoring;
         private System.Windows.Forms.Timer timeReadScaled;
+        private TextBox txtMonitor;
     }
 }
